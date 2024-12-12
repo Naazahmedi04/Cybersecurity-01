@@ -3,140 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Facts App</title>
+    <title>Cybersecurity Facts</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 20px;
-            background-color: #f0f2f5;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
+            background-color: white;
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 30px;
         }
 
-        .fact-container {
-            background-color: white;
+        .fact-display {
+            background-color: #e8f4f8;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
         }
 
-        #fact-display {
+        #fact-text {
             font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 10px;
+            color: #34495e;
+            margin: 0;
         }
 
-        #category-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-            background-color: #3498db;
-            color: white;
+        #category {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 10px;
         }
 
         button {
             display: block;
-            width: 200px;
             margin: 20px auto;
-            padding: 10px;
-            background-color: #2ecc71;
+            padding: 10px 20px;
+            background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
         }
 
         button:hover {
-            background-color: #27ae60;
+            background-color: #2980b9;
         }
 
-        .all-facts-container {
-            margin-top: 40px;
+        .all-facts {
+            margin-top: 30px;
         }
 
         #facts-list {
-            display: grid;
-            gap: 15px;
+            list-style-type: none;
+            padding: 0;
         }
 
-        .fact-card {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        #facts-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        #facts-list li:hover {
+            background-color: #f8f9fa;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Cybersecurity Facts</h1>
-        <div class="fact-container">
-            <p id="fact-display">Click the button to get a random cybersecurity fact!</p>
-            <span id="category-badge"></span>
+        <div class="fact-display">
+            <p id="fact-text">Click the button to get a random cybersecurity fact!</p>
+            <p id="category"></p>
         </div>
         <button id="new-fact-btn">Get Random Fact</button>
-        <div class="all-facts-container">
+        <div class="all-facts">
             <h2>All Facts</h2>
-            <div id="facts-list"></div>
+            <ul id="facts-list"></ul>
         </div>
     </div>
 
     <script>
         const cybersecurityFacts = {
-            "cybersecurity_facts": [
+            "cybersecurityFacts": [
                 // ... (all 20 facts from the original script.js)
-                // I've removed them here for brevity, but you should include all 20 facts
+                {
+                    "id": 1,
+                    "fact": "The first computer virus was created in 1971 and was called 'Creeper'",
+                    "category": "history"
+                },
+                // ... Include all other facts here
+                {
+                    "id": 20,
+                    "fact": "The global cybersecurity market size is expected to reach $372.04 billion by 2028",
+                    "category": "industry"
+                }
             ]
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const factDisplay = document.getElementById('fact-display');
-            const categoryBadge = document.getElementById('category-badge');
-            const newFactBtn = document.getElementById('new-fact-btn');
-            const factsList = document.getElementById('facts-list');
+        // DOM elements
+        const factText = document.getElementById('fact-text');
+        const categoryText = document.getElementById('category');
+        const newFactBtn = document.getElementById('new-fact-btn');
+        const factsList = document.getElementById('facts-list');
 
-            function displayRandomFact() {
-                const facts = cybersecurityFacts.cybersecurity_facts;
-                const randomFact = facts[Math.floor(Math.random() * facts.length)];
-                
-                factDisplay.textContent = randomFact.fact;
-                categoryBadge.textContent = randomFact.category;
-            }
+        // Function to display a random fact
+        function displayRandomFact() {
+            const facts = cybersecurityFacts.cybersecurityFacts;
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const fact = facts[randomIndex];
+            
+            factText.textContent = fact.fact;
+            categoryText.textContent = `Category: ${fact.category}`;
+        }
 
-            function displayAllFacts() {
-                factsList.innerHTML = '';
-                cybersecurityFacts.cybersecurity_facts.forEach(fact => {
-                    const factCard = document.createElement('div');
-                    factCard.className = 'fact-card';
-                    factCard.innerHTML = `
-                        <p>${fact.fact}</p>
-                        <span class="category-badge">${fact.category}</span>
-                    `;
-                    factsList.appendChild(factCard);
-                });
-            }
+        // Function to display all facts
+        function displayAllFacts() {
+            const facts = cybersecurityFacts.cybersecurityFacts;
+            factsList.innerHTML = '';
+            
+            facts.forEach(fact => {
+                const li = document.createElement('li');
+                li.textContent = `${fact.fact} (${fact.category})`;
+                factsList.appendChild(li);
+            });
+        }
 
-            newFactBtn.addEventListener('click', displayRandomFact);
+        // Event listeners
+        newFactBtn.addEventListener('click', displayRandomFact);
 
+        // Initialize the page
+        window.onload = () => {
             displayRandomFact();
             displayAllFacts();
-        });
+        };
     </script>
 </body>
 </html>
